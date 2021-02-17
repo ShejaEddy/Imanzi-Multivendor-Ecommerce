@@ -46,11 +46,14 @@ import Echo from 'laravel-echo';
 
 window.Pusher = require('pusher-js');
 
+// const baseURL = window.baseURL;
+// console.log(baseURL)
+
 window.Echo = new Echo({
     broadcaster: 'pusher',
     key: process.env.MIX_PUSHER_APP_KEY,
     cluster: process.env.MIX_PUSHER_APP_CLUSTER,
     forceTLS: true,
-    authEndpoint : baseURL+'/broadcasting/auth',
+    // authEndpoint : baseURL+'/broadcasting/auth',
     encrypted: true
 });

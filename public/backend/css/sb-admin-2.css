@@ -2633,6 +2633,10 @@ fieldset:disabled a.btn {
 .show > .btn-light.dropdown-toggle:focus {
   box-shadow: 0 0 0 0.2rem rgba(220, 221, 225, 0.5);
 }
+.sidebar li.active {
+    background: #5979d4;
+    border-left: 7px solid rgb(183,185,204,0.56);
+}
 
 .btn-dark {
   color: #fff;

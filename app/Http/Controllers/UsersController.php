@@ -12,9 +12,10 @@ class UsersController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $users=User::orderBy('id','ASC')->paginate(10);
+        $role = $request->role;
+        $users=User::where('role', '=', $role ?? 'user')->orderBy('id','DESC')->paginate(10);
         return view('backend.users.index')->with('users',$users);
     }
 
@@ -41,7 +42,7 @@ class UsersController extends Controller
             'name'=>'string|required|max:30',
             'email'=>'string|required|unique:users',
             'password'=>'string|required',
-            'role'=>'required|in:admin,user',
+            'role'=>'required|in:admin,user,seller',
             'status'=>'required|in:active,inactive',
             'photo'=>'nullable|string',
         ]);
@@ -105,7 +106,7 @@ class UsersController extends Controller
         // dd($request->all());
         $data=$request->all();
         // dd($data);
-        
+
         $status=$user->fill($data)->save();
         if($status){
             request()->session()->flash('success','Successfully updated');

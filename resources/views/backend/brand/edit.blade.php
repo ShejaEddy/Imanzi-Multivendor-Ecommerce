@@ -1,12 +1,12 @@
 @extends('backend.layouts.master')
-@section('title','E-SHOP || Brand Edit')
+@section('title','Imanzi | Brand Edit')
 @section('main-content')
 
 <div class="card">
     <h5 class="card-header">Edit Brand</h5>
     <div class="card-body">
       <form method="post" action="{{route('brand.update',$brand->id)}}">
-        @csrf 
+        @csrf
         @method('PATCH')
         <div class="form-group">
           <label for="inputTitle" class="col-form-label">Title <span class="text-danger">*</span></label>
@@ -14,7 +14,7 @@
         @error('title')
         <span class="text-danger">{{$message}}</span>
         @enderror
-        </div>        
+        </div>
         <div class="form-group">
           <label for="status" class="col-form-label">Status <span class="text-danger">*</span></label>
           <select name="status" class="form-control">
@@ -26,7 +26,7 @@
           @enderror
         </div>
         <div class="form-group mb-3">
-           <button class="btn btn-success" type="submit">Update</button>
+           <button class="btn btn-primary" type="submit">Update</button>
         </div>
       </form>
     </div>

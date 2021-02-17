@@ -3,10 +3,16 @@
 @section('main-content')
 
 <div class="card">
-    <h5 class="card-header">Edit Post Tag</h5>
+    <div class="card-header py-3">
+        <h4 class="text-primary font-weight-bold">Edit Post Tag</h4>
+        <ul class="breadcrumbs">
+            <li><a href="{{route('admin')}}" style="color:#999">Dashboard</a></li>
+            <li><a href="" class="active text-primary">Update Tag</a></li>
+        </ul>
+      </div>
     <div class="card-body">
-      <form method="post" action="{{route('post-tag.update',$postTag->id)}}">
-        @csrf 
+      <form method="post" action="{{route('post-tag.update',$postTag->id)}}" class="col-sm-12 col-md-4">
+        @csrf
         @method('PATCH')
         <div class="form-group">
           <label for="inputTitle" class="col-form-label">Title</label>
@@ -27,7 +33,7 @@
           @enderror
         </div>
         <div class="form-group mb-3">
-           <button class="btn btn-success" type="submit">Update</button>
+           <button class="btn btn-primary col-12" type="submit">Update</button>
         </div>
       </form>
     </div>

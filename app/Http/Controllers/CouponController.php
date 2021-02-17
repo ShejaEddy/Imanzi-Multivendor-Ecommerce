@@ -13,8 +13,14 @@ class CouponController extends Controller
      */
     public function index()
     {
-        $coupon=Coupon::orderBy('id','DESC')->paginate('10');
-        return view('backend.coupon.index')->with('coupons',$coupon);
+        $coupons=Coupon::query();
+        $coupons = $coupons->when(auth()->user()->role != 'admin', function($q){
+            return $q->where("seller_id", auth()->id());
+        })->with('seller')->orderBy('id','DESC')->paginate();
+        if(auth()->user()->role == 'admin')
+            return view('backend.coupon.index')->with('coupons', $coupons);
+
+        return view('seller.coupon.index')->with('coupons', $coupons);
     }
 
     /**
@@ -24,7 +30,7 @@ class CouponController extends Controller
      */
     public function create()
     {
-        return view('backend.coupon.create');
+        return view('seller.coupon.create');
     }
 
     /**
@@ -40,9 +46,10 @@ class CouponController extends Controller
             'code'=>'string|required',
             'type'=>'required|in:fixed,percent',
             'value'=>'required|numeric',
-            'status'=>'required|in:active,inactive'
+            'status'=>'required|in:active,inactive',
         ]);
         $data=$request->all();
+        $data['seller_id']=auth()->id();
         $status=Coupon::create($data);
         if($status){
             request()->session()->flash('success','Coupon Successfully added');
@@ -73,10 +80,10 @@ class CouponController extends Controller
     {
         $coupon=Coupon::find($id);
         if($coupon){
-            return view('backend.coupon.edit')->with('coupon',$coupon);
+            return view('seller.coupon.edit')->with('coupon',$coupon);
         }
         else{
-            return view('backend.coupon.index')->with('error','Coupon not found');
+            return view('seller.coupon.index')->with('error','Coupon not found');
         }
     }
 
@@ -97,7 +104,7 @@ class CouponController extends Controller
             'status'=>'required|in:active,inactive'
         ]);
         $data=$request->all();
-        
+
         $status=$coupon->fill($data)->save();
         if($status){
             request()->session()->flash('success','Coupon Successfully updated');
@@ -106,7 +113,7 @@ class CouponController extends Controller
             request()->session()->flash('error','Please try again!!');
         }
         return redirect()->route('coupon.index');
-        
+
     }
 
     /**

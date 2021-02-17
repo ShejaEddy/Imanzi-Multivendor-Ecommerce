@@ -34,9 +34,9 @@
         <div class="form-group">
         <label for="inputPhoto" class="col-form-label">Photo</label>
         <div class="input-group">
-            <span class="input-group-btn">
+            <span class="input-group-btn input-group-prepend">
                 <a id="lfm" data-input="thumbnail" data-preview="holder" class="btn btn-primary">
-                <i class="fa fa-picture-o"></i> Choose
+                <i class="fa fa-image"></i> Choose
                 </a>
             </span>
             <input id="thumbnail" class="form-control" type="text" name="photo" value="{{old('photo')}}">
@@ -46,7 +46,7 @@
           <span class="text-danger">{{$message}}</span>
           @enderror
         </div>
-        @php 
+        @php
         $roles=DB::table('users')->select('role')->get();
         @endphp
         <div class="form-group">
@@ -73,7 +73,7 @@
           </div>
         <div class="form-group mb-3">
           <button type="reset" class="btn btn-warning">Reset</button>
-           <button class="btn btn-success" type="submit">Submit</button>
+           <button class="btn btn-primary" type="submit">Submit</button>
         </div>
       </form>
     </div>

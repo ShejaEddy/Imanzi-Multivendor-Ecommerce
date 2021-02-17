@@ -3,7 +3,7 @@
       <footer class="sticky-footer bg-white">
         <div class="container my-auto">
           <div class="copyright text-center my-auto">
-            <span>Copyright &copy; <a href="https://github.com/Prajwal100" target="_blank">PrajwalRai</a> 2020</span>
+            <span>Copyright &copy; Imanzi Creation {{ now()->year }}  -  All Rights Reserved.</span>
           </div>
         </div>
       </footer>
@@ -41,7 +41,7 @@
 
   <!-- Bootstrap core JavaScript-->
   <script src="{{asset('backend/vendor/jquery/jquery.min.js')}}"></script>
-  <script src="{{asset('backend/vendor/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
+  {{-- <script src="{{asset('backend/vendor/bootstrap/js/bootstrap.bundle.min.js')}}"></script> --}}
 
   <!-- Core plugin JavaScript-->
   <script src="{{asset('backend/vendor/jquery-easing/jquery.easing.min.js')}}"></script>
@@ -51,6 +51,7 @@
 
   <!-- Page level plugins -->
   <script src="{{asset('backend/vendor/chart.js/Chart.min.js')}}"></script>
+  <script src="{{mix("js/app.js")}}"></script>
 
   <!-- Page level custom scripts -->
   {{-- <script src="{{asset('backend/js/demo/chart-area-demo.js')}}"></script> --}}

@@ -3,9 +3,15 @@
 @section('main-content')
 
 <div class="card">
-    <h5 class="card-header">Add Post</h5>
+    <div class="card-header py-3">
+        <h4 class=" font-weight-bold">Add Post</h4>
+        <ul class="breadcrumbs">
+            <li><a href="{{route('admin')}}" style="color:#999">Dashboard</a></li>
+            <li><a href="" class="active text-primary">New Post</a></li>
+        </ul>
+      </div>
     <div class="card-body">
-      <form method="post" action="{{route('post.store')}}">
+      <form method="post" action="{{route('post.store')}}" class="col-md-6 col-sm-12">
         {{csrf_field()}}
         <div class="form-group">
           <label for="inputTitle" class="col-form-label">Title <span class="text-danger">*</span></label>
@@ -52,7 +58,7 @@
         <div class="form-group">
           <label for="tags">Tag</label>
           <select name="tags[]" multiple  data-live-search="true" class="form-control selectpicker">
-              <option value="">--Select any tag--</option>
+              <option value disabled>--Select any tag--</option>
               @foreach($tags as $key=>$data)
                   <option value='{{$data->title}}'>{{$data->title}}</option>
               @endforeach
@@ -70,9 +76,9 @@
         <div class="form-group">
           <label for="inputPhoto" class="col-form-label">Photo <span class="text-danger">*</span></label>
           <div class="input-group">
-              <span class="input-group-btn">
+              <span class="input-group-btn input-group-prepend">
                   <a id="lfm" data-input="thumbnail" data-preview="holder" class="btn btn-primary">
-                  <i class="fa fa-picture-o"></i> Choose
+                  <i class="fa fa-image"></i> Choose
                   </a>
               </span>
           <input id="thumbnail" class="form-control" type="text" name="photo" value="{{old('photo')}}">
@@ -82,7 +88,7 @@
           <span class="text-danger">{{$message}}</span>
           @enderror
         </div>
-        
+
         <div class="form-group">
           <label for="status" class="col-form-label">Status <span class="text-danger">*</span></label>
           <select name="status" class="form-control">
@@ -94,8 +100,8 @@
           @enderror
         </div>
         <div class="form-group mb-3">
+            <button class="btn btn-primary col-8" type="submit">Submit</button>
           <button type="reset" class="btn btn-warning">Reset</button>
-           <button class="btn btn-success" type="submit">Submit</button>
         </div>
       </form>
     </div>

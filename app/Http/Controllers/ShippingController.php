@@ -15,8 +15,14 @@ class ShippingController extends Controller
      */
     public function index()
     {
-        $shipping=Shipping::orderBy('id','DESC')->paginate(10);
-        return view('backend.shipping.index')->with('shippings',$shipping);
+        $shippings=Shipping::query();
+        $shippings = $shippings->when(auth()->user()->role != 'admin', function($q){
+            return $q->where("seller_id", auth()->id());
+    })->with('seller')->orderBy('id','DESC')->paginate();
+        if(auth()->user()->role == 'admin')
+            return view('backend.shipping.index')->with('shippings', $shippings);
+
+        return view('seller.shipping.index')->with('shippings', $shippings);
     }
 
     /**
@@ -26,7 +32,7 @@ class ShippingController extends Controller
      */
     public function create()
     {
-        return view('backend.shipping.create');
+        return view('seller.shipping.create');
     }
 
     /**
@@ -77,7 +83,7 @@ class ShippingController extends Controller
         if(!$shipping){
             request()->session()->flash('error','Shipping not found');
         }
-        return view('backend.shipping.edit')->with('shipping',$shipping);
+        return view('seller.shipping.edit')->with('shipping',$shipping);
     }
 
     /**

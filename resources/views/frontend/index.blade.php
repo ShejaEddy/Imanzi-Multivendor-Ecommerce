@@ -1,8 +1,8 @@
 @extends('frontend.layouts.master')
-@section('title','E-SHOP || HOME PAGE')
+@section('title','Imanzi | Home')
 @section('main-content')
 <!-- Slider Area -->
-<section class="hero-slider">
+{{-- <section class="hero-slider"> --}}
     <!-- Single Slider -->
 
     {{-- <div class="single-slider">
@@ -27,9 +27,26 @@
         </div>
     </div> --}}
     <!--/ End Single Slider -->
-</section>
+{{-- </section> --}}
 @if(count($banners)>0)
-    <section id="Gslider" class="carousel slide" data-ride="carousel">
+<section id="responsiveGallery-container" class="responsiveGallery-container">
+    <a class="responsiveGallery-btn responsiveGallery-btn_prev fa fa-arrow-left" href="javascript:void(0);"></a>
+    <a class="responsiveGallery-btn responsiveGallery-btn_next fa fa-arrow-right" href="javascript:void(0);"></a>
+     <ul class="responsiveGallery-wrapper">
+        @foreach($banners as $key=>$banner)
+       <li class="responsiveGallery-item">
+           <a href="{{route('product-grids')}}" class="responsivGallery-link">
+               <img src="{{$banner->photo}}" height="320" width="320" alt="" class="responsivGallery-pic">
+            </a>
+         <div class="w-responsivGallery-info">
+           <h2 class="responsivGallery-name">{{$banner->title}}</h2>
+           <h3 class="responsivGallery-position">{!! html_entity_decode($banner->description) !!}</h3>
+         </div>
+       </li>
+       @endforeach
+     </ul>
+   </section>
+    {{-- <section id="Gslider" class="carousel slide" data-ride="carousel">
         <ol class="carousel-indicators">
             @foreach($banners as $key=>$banner)
         <li data-target="#Gslider" data-slide-to="{{$key}}" class="{{(($key==0)? 'active' : '')}}"></li>
@@ -45,8 +62,8 @@
                         <p>{!! html_entity_decode($banner->description) !!}</p>
                         <a class="btn btn-lg ws-btn wow fadeInUpBig" href="{{route('product-grids')}}" role="button">Shop Now<i class="far fa-arrow-alt-circle-right"></i></i></a>
                     </div>
-                </div>  
-            @endforeach   
+                </div>
+            @endforeach
         </div>
         <a class="carousel-control-prev" href="#Gslider" role="button" data-slide="prev">
         <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -56,18 +73,22 @@
         <span class="carousel-control-next-icon" aria-hidden="true"></span>
         <span class="sr-only">Next</span>
         </a>
-    </section>
+    </section> --}}
 @endif
 
 <!--/ End Slider Area -->
 
 <!-- Start Small Banner  -->
-<section class="small-banner section">
+<section class="small-banner section mt-3">
     <div class="container-fluid">
         <div class="row">
-            @php 
-            $category_lists=DB::table('categories')->where('status','active')->limit(3)->get();
-            @endphp
+            <div class="col-12">
+                <div class="section-title">
+                    <h2>What we offer</h2>
+                </div>
+            </div>
+        </div>
+        <div class="row">
             @if($category_lists)
                 @foreach($category_lists as $cat)
                     @if($cat->is_parent==1)
@@ -79,9 +100,10 @@
                                 @else
                                     <img src="https://via.placeholder.com/600x370" alt="#">
                                 @endif
-                                <div class="content">
+                                <div class="content text-center px-2">
                                     <h3>{{$cat->title}}</h3>
-                                        <a href="{{route('product-cat',$cat->slug)}}">Discover Now</a>
+                                    <p>{{$cat->summary}}</p>
+                                    <a href="{{route('product-cat',$cat->slug)}}">Discover Now</a>
                                 </div>
                             </div>
                         </div>
@@ -100,27 +122,25 @@
             <div class="row">
                 <div class="col-12">
                     <div class="section-title">
-                        <h2>Trending Item</h2>
+                        <h2>Trending Items</h2>
                     </div>
                 </div>
             </div>
             <div class="row">
-                <div class="col-12">        
+                <div class="col-12">
                     <div class="product-info">
                         <div class="nav-main">
                             <!-- Tab Nav -->
                             <ul class="nav nav-tabs filter-tope-group" id="myTab" role="tablist">
-                                @php 
-                                    $categories=DB::table('categories')->where('status','active')->where('is_parent',1)->get();
-                                    // dd($categories);
+                                @php
+                                    $categories=$category_lists;
                                 @endphp
                                 @if($categories)
-                                <button class="btn" style="background:black"data-filter="*">
+                                <button class="btn how-active1" data-filter="*">
                                     All Products
                                 </button>
                                     @foreach($categories as $key=>$cat)
-                                    
-                                    <button class="btn" style="background:none;color:black;"data-filter=".{{$cat->id}}">
+                                    <button class="btn " data-filter=".{{$cat->id}}">
                                         {{$cat->title}}
                                     </button>
                                     @endforeach
@@ -128,24 +148,23 @@
                             </ul>
                             <!--/ End Tab Nav -->
                         </div>
-                        <div class="tab-content isotope-grid" id="myTabContent">
+                        <div class="tab-content isotope-grid mt-4" id="myTabContent">
                              <!-- Start Single Tab -->
                             @if($product_lists)
                                 @foreach($product_lists as $key=>$product)
                                 <div class="col-sm-6 col-md-4 col-lg-3 p-b-35 isotope-item {{$product->cat_id}}">
-                                    <div class="single-product">
+                                    <div class="single-product pb-3 border rounded">
                                         <div class="product-img">
                                             <a href="{{route('product-detail',$product->slug)}}">
-                                                @php 
+                                                @php
                                                     $photo=explode(',',$product->photo);
-                                                // dd($photo);
                                                 @endphp
                                                 <img class="default-img" src="{{$photo[0]}}" alt="{{$photo[0]}}">
                                                 <img class="hover-img" src="{{$photo[0]}}" alt="{{$photo[0]}}">
                                                 @if($product->stock<=0)
                                                     <span class="out-of-stock">Sale out</span>
                                                 @elseif($product->condition=='new')
-                                                    <span class="new">New</span
+                                                    <span class="new">New</span>
                                                 @elseif($product->condition=='hot')
                                                     <span class="hot">Hot</span>
                                                 @else
@@ -154,7 +173,7 @@
 
 
                                             </a>
-                                            <div class="button-head">
+                                            <div class="button-head px-2">
                                                 <div class="product-action">
                                                     <a data-toggle="modal" data-target="#{{$product->id}}" title="Quick View" href="#"><i class=" ti-eye"></i><span>Quick Shop</span></a>
                                                     <a title="Wishlist" href="{{route('add-to-wishlist',$product->slug)}}" ><i class=" ti-heart "></i><span>Add to Wishlist</span></a>
@@ -164,14 +183,26 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="product-content">
-                                            <h3><a href="{{route('product-detail',$product->slug)}}">{{$product->title}}</a></h3>
+                                        <div class="product-content px-2">
+                                            <h3 class="text-warning"><a href="{{route('product-detail',$product->slug)}}">{{$product->title}}</a></h3>
                                             <div class="product-price">
                                                 @php
                                                     $after_discount=($product->price-($product->price*$product->discount)/100);
                                                 @endphp
-                                                <span>${{number_format($after_discount,2)}}</span>
-                                                <del style="padding-left:4%;">${{number_format($product->price,2)}}</del>
+                                                <span class="small">{{number_format($after_discount,2)}}Rwf</span>
+                                                <del class="text-danger small" style="padding-left:4%;">{{number_format($product->price,2)}}Rwf</del>
+                                                <ul class="rating d-flex text-warning mt-2">
+                                                    @php
+                                                        $rate=ceil($product->getReview->avg('rate'))
+                                                    @endphp
+                                                        @for($i=1; $i<=5; $i++)
+                                                            @if($rate>=$i)
+                                                                <li><i class="fa fa-star mr-1"></i></li>
+                                                            @else
+                                                                <li><i class="fa fa-star-o mr-1"></i></li>
+                                                            @endif
+                                                     @endfor
+                                                </ul>
                                             </div>
                                         </div>
                                     </div>
@@ -180,7 +211,7 @@
 
                              <!--/ End Single Tab -->
                             @endif
-                       
+
                         <!--/ End Single Tab -->
 
                         </div>
@@ -202,7 +233,7 @@
                     <!-- Single Banner  -->
                     <div class="col-lg-6 col-md-6 col-12">
                         <div class="single-banner">
-                            @php 
+                            @php
                                 $photo=explode(',',$data->photo);
                             @endphp
                             <img src="{{$photo[0]}}" alt="{{$photo[0]}}">
@@ -240,13 +271,11 @@
                         <div class="single-product">
                             <div class="product-img">
                                 <a href="{{route('product-detail',$product->slug)}}">
-                                    @php 
+                                    @php
                                         $photo=explode(',',$product->photo);
-                                    // dd($photo);
                                     @endphp
                                     <img class="default-img" src="{{$photo[0]}}" alt="{{$photo[0]}}">
                                     <img class="hover-img" src="{{$photo[0]}}" alt="{{$photo[0]}}">
-                                    {{-- <span class="out-of-stock">Hot</span> --}}
                                 </a>
                                 <div class="button-head">
                                     <div class="product-action">
@@ -261,12 +290,24 @@
                             <div class="product-content">
                                 <h3><a href="{{route('product-detail',$product->slug)}}">{{$product->title}}</a></h3>
                                 <div class="product-price">
-                                    <span class="old">${{number_format($product->price,2)}}</span>
-                                    @php 
+                                    <span class="old">{{number_format($product->price,2)}}Rwf</span>
+                                    @php
                                     $after_discount=($product->price-($product->price*$product->discount)/100)
                                     @endphp
-                                    <span>${{number_format($after_discount,2)}}</span>
+                                    <span>{{number_format($after_discount,2)}}Rwf</span>
                                 </div>
+                                {{-- <ul class="rating d-flex text-warning d-flex text-warning">
+                                    @php
+                                        $rate=ceil($product->getReview->avg('rate'))
+                                    @endphp
+                                        @for($i=1; $i<=5; $i++)
+                                            @if($rate>=$i)
+                                                <li><i class="fa fa-star mr-1"></i></li>
+                                            @else
+                                                <li><i class="fa fa-star-o mr-1"></i></li>
+                                            @endif
+                                        @endfor
+                                </ul> --}}
                             </div>
                         </div>
                         <!-- End Single Product -->
@@ -293,7 +334,7 @@
                 </div>
                 <div class="row">
                     @php
-                        $product_lists=DB::table('products')->where('status','active')->orderBy('id','DESC')->limit(6)->get();
+                        $product_lists=DB::table('products')->where('status','active')->where('approval_status','approved')->orderBy('id','DESC')->limit(6)->get();
                     @endphp
                     @foreach($product_lists as $product)
                         <div class="col-md-4">
@@ -302,9 +343,8 @@
                                 <div class="row">
                                 <div class="col-lg-6 col-md-6 col-12">
                                     <div class="list-image overlay">
-                                        @php 
+                                        @php
                                             $photo=explode(',',$product->photo);
-                                            // dd($photo);
                                         @endphp
                                         <img src="{{$photo[0]}}" alt="{{$photo[0]}}">
                                         <a href="{{route('add-to-cart',$product->slug)}}" class="buy"><i class="fa fa-shopping-bag"></i></a>
@@ -313,7 +353,19 @@
                                 <div class="col-lg-6 col-md-6 col-12 no-padding">
                                     <div class="content">
                                         <h4 class="title"><a href="#">{{$product->title}}</a></h4>
-                                        <p class="price with-discount">${{number_format($product->discount,2)}}</p>
+                                        <p class="price with-discount">{{number_format($product->discount,2)}} Rwf</p>
+                                        {{-- <ul class="rating d-flex text-warning mt-2">
+                                            @php
+                                                $rate=ceil($product->getReview->avg('rate'))
+                                            @endphp
+                                                @for($i=1; $i<=5; $i++)
+                                                    @if($rate>=$i)
+                                                        <li><i class="fa fa-star mr-1"></i></li>
+                                                    @else
+                                                        <li><i class="fa fa-star-o mr-1"></i></li>
+                                                    @endif
+                                             @endfor
+                                        </ul> --}}
                                     </div>
                                 </div>
                                 </div>
@@ -336,29 +388,29 @@
                 <div class="row">
                     <div class="col-lg-6 col-12 padding-right">
                         <div class="image">
-                            @php 
+                            @php
                                 $photo=explode(',',$data->photo);
                                 // dd($photo);
                             @endphp
                             <img src="{{$photo[0]}}" alt="{{$photo[0]}}">
-                        </div>	
-                    </div>	
+                        </div>
+                    </div>
                     <div class="col-lg-6 col-12 padding-left">
                         <div class="content">
                             <div class="heading-block">
                                 <p class="small-title">Deal of day</p>
                                 <h3 class="title">{{$data->title}}</h3>
                                 <p class="text">{!! html_entity_decode($data->summary) !!}</p>
-                                @php 
+                                @php
                                     $after_discount=($product->price-($product->price*$product->discount)/100)
                                 @endphp
-                                <h1 class="price">${{number_format($after_discount)}} <s>${{number_format($data->price)}}</s></h1>
+                                <h1 class="price">Rwf{{number_format($after_discount)}} <s>Rwf{{number_format($data->price)}}</s></h1>
                                 <div class="coming-time">
                                     <div class="clearfix" data-countdown="2021/02/30"></div>
                                 </div>
                             </div>
-                        </div>	
-                    </div>	
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -392,7 +444,7 @@
                     </div>
                 @endforeach
             @endif
-            
+
         </div>
     </div>
 </section>
@@ -407,7 +459,7 @@
                 <div class="single-service">
                     <i class="ti-rocket"></i>
                     <h4>Free shiping</h4>
-                    <p>Orders over $100</p>
+                    <p>Orders over 100000Rwf</p>
                 </div>
                 <!-- End Single Service -->
             </div>
@@ -424,7 +476,7 @@
                 <!-- Start Single Service -->
                 <div class="single-service">
                     <i class="ti-lock"></i>
-                    <h4>Sucure Payment</h4>
+                    <h4>Secure Payment</h4>
                     <p>100% secure payment</p>
                 </div>
                 <!-- End Single Service -->
@@ -433,7 +485,7 @@
                 <!-- Start Single Service -->
                 <div class="single-service">
                     <i class="ti-tag"></i>
-                    <h4>Best Peice</h4>
+                    <h4>Best Piece</h4>
                     <p>Guaranteed price</p>
                 </div>
                 <!-- End Single Service -->
@@ -460,7 +512,7 @@
                                     <!-- Product Slider -->
                                         <div class="product-gallery">
                                             <div class="quickview-slider-active">
-                                                @php 
+                                                @php
                                                     $photo=explode(',',$product->photo);
                                                 // dd($photo);
                                                 @endphp
@@ -491,7 +543,7 @@
                                                     @for($i=1; $i<=5; $i++)
                                                         @if($rate>=$i)
                                                             <i class="yellow fa fa-star"></i>
-                                                        @else 
+                                                        @else
                                                         <i class="fa fa-star"></i>
                                                         @endif
                                                     @endfor
@@ -501,7 +553,7 @@
                                             <div class="quickview-stock">
                                                 @if($product->stock >0)
                                                 <span><i class="fa fa-check-circle-o"></i> {{$product->stock}} in stock</span>
-                                                @else 
+                                                @else
                                                 <span><i class="fa fa-times-circle-o text-danger"></i> {{$product->stock}} out stock</span>
                                                 @endif
                                             </div>
@@ -509,7 +561,7 @@
                                         @php
                                             $after_discount=($product->price-($product->price*$product->discount)/100);
                                         @endphp
-                                        <h3><small><del class="text-muted">${{number_format($product->price,2)}}</del></small>    ${{number_format($after_discount,2)}}  </h3>
+                                        <h3><small><del class="text-muted">Rwf{{number_format($product->price,2)}}</del></small>    Rwf{{number_format($after_discount,2)}}  </h3>
                                         <div class="quickview-peragraph">
                                             <p>{!! html_entity_decode($product->summary) !!}</p>
                                         </div>
@@ -519,7 +571,7 @@
                                                     <div class="col-lg-6 col-12">
                                                         <h5 class="title">Size</h5>
                                                         <select>
-                                                            @php 
+                                                            @php
                                                             $sizes=explode(',',$product->size);
                                                             // dd($sizes);
                                                             @endphp
@@ -541,7 +593,7 @@
                                             </div>
                                         @endif
                                         <form action="{{route('single-add-to-cart')}}" method="POST" class="mt-4">
-                                            @csrf 
+                                            @csrf
                                             <div class="quantity">
                                                 <!-- Input Order -->
                                                 <div class="input-group">
@@ -565,9 +617,9 @@
                                                 <a href="{{route('add-to-wishlist',$product->slug)}}" class="btn min"><i class="ti-heart"></i></a>
                                             </div>
                                         </form>
-                                        <div class="default-social">
+                                        {{-- <div class="default-social">
                                         <!-- ShareThis BEGIN --><div class="sharethis-inline-share-buttons"></div><!-- ShareThis END -->
-                                        </div>
+                                        </div> --}}
                                     </div>
                                 </div>
                             </div>
@@ -581,8 +633,10 @@
 @endsection
 
 @push('styles')
+    <link rel="stylesheet" type="text/css" href="vendor/coverflow-carousel/css/reset.css">
+	<link rel="stylesheet" type="text/css" href="vendor/coverflow-carousel/css/jquery-responsiveGallery.css">
     <script type='text/javascript' src='https://platform-api.sharethis.com/js/sharethis.js#property=5f2e5abf393162001291e431&product=inline-share-buttons' async='async'></script>
-    <script type='text/javascript' src='https://platform-api.sharethis.com/js/sharethis.js#property=5f2e5abf393162001291e431&product=inline-share-buttons' async='async'></script>
+
     <style>
         /* Banner Sliding */
         #Gslider .carousel-inner {
@@ -618,10 +672,27 @@
         #Gslider .carousel-indicators {
         bottom: 70px;
         }
+        .responsiveGallery-container {
+            background: linear-gradient(0deg, #383636, #9a9a9a);
+            padding-top: 75px;
+            overflow: hidden;
+        }
     </style>
 @endpush
 
 @push('scripts')
+<script type="text/javascript" src="vendor/coverflow-carousel/src/jquery.responsiveGallery.js"></script>
+<script type="text/javascript" src="vendor/coverflow-carousel/lib/modernizr.custom.js"></script>
+<script type="text/javascript">
+    $(function () {
+        $('.responsiveGallery-wrapper').responsiveGallery({
+            animatDuration: 400, //动画时长 单位 ms
+            $btn_prev: $('.responsiveGallery-btn_prev'),
+            $btn_next: $('.responsiveGallery-btn_next')
+        });
+    });
+
+</script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
 
     {{-- <script>
@@ -678,14 +749,14 @@
                     else{
                         swal('error',response.msg,'error').then(function(){
 							// document.location.href=document.location.href;
-						}); 
+						});
                     }
                 }
             });
         });
     </script> --}}
     <script>
-        
+        // carousel
         /*==================================================================
         [ Isotope ]*/
         var $topeContainer = $('.isotope-grid');
@@ -697,7 +768,7 @@
                 var filterValue = $(this).attr('data-filter');
                 $topeContainer.isotope({filter: filterValue});
             });
-            
+
         });
 
         // init Isotope

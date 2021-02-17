@@ -3,10 +3,16 @@
 @section('main-content')
 
 <div class="card">
-    <h5 class="card-header">Edit Post</h5>
+    <div class="card-header py-3">
+        <h4 class=" font-weight-bold">Edit Post</h4>
+        <ul class="breadcrumbs">
+            <li><a href="{{route('admin')}}" style="color:#999">Dashboard</a></li>
+            <li><a href="" class="active text-primary">Update Post</a></li>
+        </ul>
+      </div>
     <div class="card-body">
       <form method="post" action="{{route('post.update',$post->id)}}">
-        @csrf 
+        @csrf
         @method('PATCH')
         <div class="form-group">
           <label for="inputTitle" class="col-form-label">Title <span class="text-danger">*</span></label>
@@ -50,7 +56,7 @@
           </select>
         </div>
         {{-- {{$post->tags}} --}}
-        @php 
+        @php
                 $post_tags=explode(',',$post->tags);
                 // dd($tags);
               @endphp
@@ -59,7 +65,7 @@
           <select name="tags[]" multiple  data-live-search="true" class="form-control selectpicker">
               <option value="">--Select any tag--</option>
               @foreach($tags as $key=>$data)
-              
+
               <option value="{{$data->title}}"  {{(( in_array( "$data->title",$post_tags ) ) ? 'selected' : '')}}>{{$data->title}}</option>
               @endforeach
           </select>
@@ -76,9 +82,9 @@
         <div class="form-group">
           <label for="inputPhoto" class="col-form-label">Photo <span class="text-danger">*</span></label>
           <div class="input-group">
-              <span class="input-group-btn">
+              <span class="input-group-btn input-group-prepend">
                   <a id="lfm" data-input="thumbnail" data-preview="holder" class="btn btn-primary">
-                  <i class="fa fa-picture-o"></i> Choose
+                  <i class="fa fa-image"></i> Choose
                   </a>
               </span>
           <input id="thumbnail" class="form-control" type="text" name="photo" value="{{$post->photo}}">
@@ -89,7 +95,7 @@
           <span class="text-danger">{{$message}}</span>
           @enderror
         </div>
-        
+
         <div class="form-group">
           <label for="status" class="col-form-label">Status <span class="text-danger">*</span></label>
           <select name="status" class="form-control">
@@ -101,7 +107,7 @@
           @enderror
         </div>
         <div class="form-group mb-3">
-           <button class="btn btn-success" type="submit">Update</button>
+           <button class="btn btn-primary" type="submit">Update</button>
         </div>
       </form>
     </div>

@@ -454,7 +454,7 @@
 
 .fa-photo:before,
 .fa-image:before,
-.fa-picture-o:before {
+.fa-image:before {
     content: "\f03e"
 }
 

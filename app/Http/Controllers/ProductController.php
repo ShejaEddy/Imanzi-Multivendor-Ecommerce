@@ -16,11 +16,12 @@ class ProductController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $products=Product::getAllProduct();
-        // return $products;
-        return view('backend.product.index')->with('products',$products);
+        $approval_status = $request->approval_status;
+        $products=Product::getAllProduct(auth()->id(),null,$approval_status);
+        if(auth()->user()->role == 'admin') return view('backend.product.index')->with('products',$products);
+        return view('seller.product.index')->with('products',$products);
     }
 
     /**
@@ -33,7 +34,7 @@ class ProductController extends Controller
         $brand=Brand::get();
         $category=Category::where('is_parent',1)->get();
         // return $category;
-        return view('backend.product.create')->with('categories',$category)->with('brands',$brand);
+        return view('seller.product.create')->with('categories',$category)->with('brands',$brand);
     }
 
     /**
@@ -77,8 +78,8 @@ class ProductController extends Controller
         else{
             $data['size']='';
         }
-        // return $size;
-        // return $data;
+        $data['seller_id']=auth()->id();
+
         $status=Product::create($data);
         if($status){
             request()->session()->flash('success','Product Successfully added');
@@ -98,7 +99,8 @@ class ProductController extends Controller
      */
     public function show($id)
     {
-        //
+        $product=Product::where("id",$id)->where("seller_id", auth()->id())->firstOrFail();
+        return view('seller.product.show')->with('product',$product);
     }
 
     /**
@@ -112,11 +114,9 @@ class ProductController extends Controller
         $brand=Brand::get();
         $product=Product::findOrFail($id);
         $category=Category::where('is_parent',1)->get();
-        $items=Product::where('id',$id)->get();
-        // return $items;
-        return view('backend.product.edit')->with('product',$product)
+        return view('seller.product.edit')->with('product',$product)
                     ->with('brands',$brand)
-                    ->with('categories',$category)->with('items',$items);
+                    ->with('categories',$category);
     }
 
     /**
@@ -176,7 +176,7 @@ class ProductController extends Controller
     {
         $product=Product::findOrFail($id);
         $status=$product->delete();
-        
+
         if($status){
             request()->session()->flash('success','Product successfully deleted');
         }
@@ -185,4 +185,23 @@ class ProductController extends Controller
         }
         return redirect()->route('product.index');
     }
+
+    public function setAdminPermission(Product $product, Request $request){
+        $this->validate($request,[
+            'approval_status'=>'in:approved,denied|required',
+        ]);
+        $status = $product->fill($request->all())->save();
+        if($status){
+            request()->session()->flash('success','Product Successfully updated');
+        }
+        else{
+            request()->session()->flash('error','Please try again!!');
+        }
+        return redirect()->route('admin.product.index');
+    }
+
+    public function editPermission(Product $product) {
+        return view('backend.product.edit')->with(['product'=>$product]);
+    }
 }
+

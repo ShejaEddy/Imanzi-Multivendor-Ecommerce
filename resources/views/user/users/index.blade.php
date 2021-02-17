@@ -2,7 +2,7 @@
 
 @section('main-content')
  <!-- DataTales Example -->
- <div class="card shadow mb-4">
+ <div class="card shadow-sm mb-4">
      <div class="row">
          <div class="col-md-12">
             @include('backend.layouts.notification')
@@ -14,7 +14,7 @@
     </div>
     <div class="card-body">
       <div class="table-responsive">
-        <table class="table table-bordered" id="user-dataTable" width="100%" cellspacing="0">
+        <table class="table table-stripped" id="user-dataTable" width="100%" cellspacing="0">
           <thead>
             <tr>
               <th>S.N.</th>
@@ -40,7 +40,7 @@
               </tr>
           </tfoot>
           <tbody>
-            @foreach($users as $user)   
+            @foreach($users as $user)
                 <tr>
                     <td>{{$user->id}}</td>
                     <td>{{$user->name}}</td>
@@ -62,11 +62,11 @@
                         @endif
                     </td>
                     <td>
-                        <a href="{{route('users.edit',$user->id)}}" class="btn btn-primary btn-sm float-left mr-1" style="height:30px; width:30px;border-radius:50%" data-toggle="tooltip" title="edit" data-placement="bottom"><i class="fas fa-edit"></i></a>
+                        <a href="{{route('users.edit',$user->id)}}" class="text-primary btn-sm float-left mr-1" style="height:30px; width:30px;border-radius:50%" data-toggle="tooltip" title="edit" data-placement="bottom"><i class="fas fa-edit"></i></a>
                     <form method="POST" action="{{route('users.destroy',[$user->id])}}">
-                      @csrf 
+                      @csrf
                       @method('delete')
-                          <button class="btn btn-danger btn-sm dltBtn" data-id={{$user->id}} style="height:30px; width:30px;border-radius:50%" data-toggle="tooltip" data-placement="bottom" title="Delete"><i class="fas fa-trash-alt"></i></button>
+                          <button class="text-danger dltBtn border" data-id={{$user->id}} style="height:30px; width:30px;border-radius:50%" data-toggle="tooltip" data-placement="bottom" title="Delete"><i class="fas fa-trash-alt"></i></button>
                         </form>
                     </td>
                     {{-- Delete Modal --}}
@@ -81,7 +81,7 @@
                             </div>
                             <div class="modal-body">
                               <form method="post" action="{{ route('users.destroy',$user->id) }}">
-                                @csrf 
+                                @csrf
                                 @method('delete')
                                 <button type="submit" class="btn btn-danger" style="margin:auto; text-align:center">Parmanent delete user</button>
                               </form>
@@ -89,7 +89,7 @@
                           </div>
                         </div>
                     </div> --}}
-                </tr>  
+                </tr>
             @endforeach
           </tbody>
         </table>
@@ -119,7 +119,7 @@
   <!-- Page level custom scripts -->
   <script src="{{asset('backend/js/demo/datatables-demo.js')}}"></script>
   <script>
-      
+
       $('#user-dataTable').DataTable( {
             "columnDefs":[
                 {
@@ -132,7 +132,7 @@
         // Sweet alert
 
         function deleteData(id){
-            
+
         }
   </script>
   <script>

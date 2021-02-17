@@ -53843,7 +53843,7 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "container" }, [
+    return _c("div", { staticClass: "container", attrs: { id: "app" } }, [
       _c("div", { staticClass: "row justify-content-center" }, [
         _c("div", { staticClass: "col-md-8" }, [
           _c("div", { staticClass: "card" }, [
@@ -66119,13 +66119,15 @@ window.axios.defaults.headers.common = {
   'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
 };
 
-window.Pusher = __webpack_require__(/*! pusher-js */ "./node_modules/pusher-js/dist/web/pusher.js");
+window.Pusher = __webpack_require__(/*! pusher-js */ "./node_modules/pusher-js/dist/web/pusher.js"); // const baseURL = window.baseURL;
+// console.log(baseURL)
+
 window.Echo = new laravel_echo__WEBPACK_IMPORTED_MODULE_0__["default"]({
   broadcaster: 'pusher',
-  key: "dbef79a7681a60303745",
-  cluster: "ap2",
+  key: "",
+  cluster: "mt1",
   forceTLS: true,
-  authEndpoint: baseURL + '/broadcasting/auth',
+  // authEndpoint : baseURL+'/broadcasting/auth',
   encrypted: true
 });
 
@@ -66218,8 +66220,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! C:\xampp\htdocs\laravel\e-tech\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! C:\xampp\htdocs\laravel\e-tech\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! C:\Users\sheja\Documents\imanzi\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! C:\Users\sheja\Documents\imanzi\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

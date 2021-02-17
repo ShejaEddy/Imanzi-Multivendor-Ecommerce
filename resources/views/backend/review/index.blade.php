@@ -2,19 +2,23 @@
 
 @section('main-content')
  <!-- DataTales Example -->
- <div class="card shadow mb-4">
+ <div class="card shadow-sm mb-4">
      <div class="row">
          <div class="col-md-12">
             @include('backend.layouts.notification')
          </div>
      </div>
-    <div class="card-header py-3">
-      <h6 class="m-0 font-weight-bold text-primary float-left">Review Lists</h6>
-    </div>
+     <div class="card-header py-3">
+        <h4 class=" font-weight-bold">Product Reviews List</h4>
+        <ul class="breadcrumbs">
+            <li><a href="{{route('admin')}}" style="color:#999">Dashboard</a></li>
+            <li><a href="" class="active text-primary">Reviews</a></li>
+        </ul>
+      </div>
     <div class="card-body">
       <div class="table-responsive">
         @if(count($reviews)>0)
-        <table class="table table-bordered" id="order-dataTable" width="100%" cellspacing="0">
+        <table class="table table-stripped" id="order-dataTable" width="100%" cellspacing="0">
           <thead>
             <tr>
               <th>S.N.</th>
@@ -40,8 +44,8 @@
               </tr>
           </tfoot>
           <tbody>
-            @foreach($reviews as $review)  
-              @php 
+            @foreach($reviews as $review)
+              @php
               $title=DB::table('products')->select('title')->where('id',$review->product_id)->get();
               @endphp
                 <tr>
@@ -54,7 +58,7 @@
                           @for($i=1; $i<=5;$i++)
                           @if($review->rate >=$i)
                             <li style="float:left;color:#F7941D;"><i class="fa fa-star"></i></li>
-                          @else 
+                          @else
                             <li style="float:left;color:#F7941D;"><i class="far fa-star"></i></li>
                           @endif
                         @endfor
@@ -69,14 +73,14 @@
                         @endif
                     </td>
                     <td>
-                        <a href="{{route('review.edit',$review->id)}}" class="btn btn-primary btn-sm float-left mr-1" style="height:30px; width:30px;border-radius:50%" data-toggle="tooltip" title="edit" data-placement="bottom"><i class="fas fa-edit"></i></a>
+                        <a href="{{route('review.edit',$review->id)}}" class="text-primary btn-sm float-left mr-1" style="height:30px; width:30px;border-radius:50%" data-toggle="tooltip" title="edit" data-placement="bottom"><i class="fas fa-edit"></i></a>
                         <form method="POST" action="{{route('review.destroy',[$review->id])}}">
-                          @csrf 
+                          @csrf
                           @method('delete')
-                              <button class="btn btn-danger btn-sm dltBtn" data-id={{$review->id}} style="height:30px; width:30px;border-radius:50%" data-toggle="tooltip" data-placement="bottom" title="Delete"><i class="fas fa-trash-alt"></i></button>
+                              <button class="text-danger dltBtn border" data-id={{$review->id}} style="height:30px; width:30px;border-radius:50%" data-toggle="tooltip" data-placement="bottom" title="Delete"><i class="fas fa-trash-alt"></i></button>
                         </form>
                     </td>
-                </tr>  
+                </tr>
             @endforeach
           </tbody>
         </table>
@@ -109,7 +113,7 @@
   <!-- Page level custom scripts -->
   <script src="{{asset('backend/js/demo/datatables-demo.js')}}"></script>
   <script>
-      
+
       $('#order-dataTable').DataTable( {
             "columnDefs":[
                 {
@@ -122,7 +126,7 @@
         // Sweet alert
 
         function deleteData(id){
-            
+
         }
   </script>
   <script>

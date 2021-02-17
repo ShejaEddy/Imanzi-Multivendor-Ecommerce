@@ -1,5 +1,5 @@
 @extends('backend.layouts.master')
-@section('title','E-SHOP || Brand Create')
+@section('title','Imanzi | Brand Create')
 @section('main-content')
 
 <div class="card">
@@ -14,7 +14,7 @@
         <span class="text-danger">{{$message}}</span>
         @enderror
         </div>
-        
+
         <div class="form-group">
           <label for="status" class="col-form-label">Status <span class="text-danger">*</span></label>
           <select name="status" class="form-control">
@@ -27,7 +27,7 @@
         </div>
         <div class="form-group mb-3">
           <button type="reset" class="btn btn-warning">Reset</button>
-           <button class="btn btn-success" type="submit">Submit</button>
+           <button class="btn btn-primary" type="submit">Submit</button>
         </div>
       </form>
     </div>

@@ -3,10 +3,16 @@
 @section('main-content')
 
 <div class="card">
-    <h5 class="card-header">Edit User</h5>
+    <div class="card-header py-3">
+        <h4 class="font-weight-bold text-primary">Edit User</h4>
+        <ul class="breadcrumbs">
+            <li><a href="{{route('admin')}}" style="color:#999">Dashboard</a></li>
+            <li><a href="" class="active text-primary">Update User</a></li>
+        </ul>
+      </div>
     <div class="card-body">
-      <form method="post" action="{{route('users.update',$user->id)}}">
-        @csrf 
+      <form method="post" action="{{route('users.update',$user->id)}}" class="col-md-4 col-sm-12">
+        @csrf
         @method('PATCH')
         <div class="form-group">
           <label for="inputTitle" class="col-form-label">Name</label>
@@ -35,9 +41,9 @@
         <div class="form-group">
         <label for="inputPhoto" class="col-form-label">Photo</label>
         <div class="input-group">
-            <span class="input-group-btn">
+            <span class="input-group-btn input-group-prepend">
                 <a id="lfm" data-input="thumbnail" data-preview="holder" class="btn btn-primary">
-                <i class="fa fa-picture-o"></i> Choose
+                <i class="fa fa-image"></i> Choose
                 </a>
             </span>
             <input id="thumbnail" class="form-control" type="text" name="photo" value="{{$user->photo}}">
@@ -47,7 +53,7 @@
           <span class="text-danger">{{$message}}</span>
           @enderror
         </div>
-        @php 
+        @php
         $roles=DB::table('users')->select('role')->where('id',$user->id)->get();
         // dd($roles);
         @endphp
@@ -75,7 +81,7 @@
           @enderror
           </div>
         <div class="form-group mb-3">
-           <button class="btn btn-success" type="submit">Update</button>
+           <button class="btn btn-primary col-12" type="submit">Update</button>
         </div>
       </form>
     </div>

@@ -1,10 +1,10 @@
 @extends('frontend.layouts.master')
 
-@section('title','E-Shop || Login Page')
+@section('title','Imanzi | Login Page')
 
 @section('main-content')
     <!-- Breadcrumbs -->
-    <div class="breadcrumbs">
+    {{-- <div class="breadcrumbs">
         <div class="container">
             <div class="row">
                 <div class="col-12">
@@ -17,17 +17,17 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> --}}
     <!-- End Breadcrumbs -->
-            
+
     <!-- Shop Login -->
     <section class="shop login section">
         <div class="container">
-            <div class="row"> 
+            <div class="row">
                 <div class="col-lg-6 offset-lg-3 col-12">
                     <div class="login-form">
                         <h2>Login</h2>
-                        <p>Please register in order to checkout more quickly</p>
+                        <p>Please login in order to checkout more quickly</p>
                         <!-- Form -->
                         <form class="form" method="post" action="{{route('login.submit')}}">
                             @csrf
@@ -35,7 +35,7 @@
                                 <div class="col-12">
                                     <div class="form-group">
                                         <label>Your Email<span>*</span></label>
-                                        <input type="email" name="email" placeholder="" required="required" value="{{old('email')}}">
+                                        <input type="email" name="email" class="border rounded" placeholder="" required="required" value="{{old('email')}}">
                                         @error('email')
                                             <span class="text-danger">{{$message}}</span>
                                         @enderror
@@ -44,7 +44,7 @@
                                 <div class="col-12">
                                     <div class="form-group">
                                         <label>Your Password<span>*</span></label>
-                                        <input type="password" name="password" placeholder="" required="required" value="{{old('password')}}">
+                                        <input type="password" class="border rounded"name="password" placeholder="" required="required" value="{{old('password')}}">
                                         @error('password')
                                             <span class="text-danger">{{$message}}</span>
                                         @enderror

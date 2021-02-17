@@ -19,7 +19,7 @@ use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 class FrontendController extends Controller
 {
-   
+
     public function index(Request $request){
         return redirect()->route($request->user()->role);
     }
@@ -27,18 +27,16 @@ class FrontendController extends Controller
     public function home(){
         $featured=Product::where('status','active')->where('is_featured',1)->orderBy('price','DESC')->limit(2)->get();
         $posts=Post::where('status','active')->orderBy('id','DESC')->limit(3)->get();
-        $banners=Banner::where('status','active')->limit(3)->orderBy('id','DESC')->get();
-        // return $banner;
-        $products=Product::where('status','active')->orderBy('id','DESC')->limit(8)->get();
+        $banners=Banner::where('status','active')->orderBy('id','DESC')->get();
+        $products=Product::where('status','active')->where('approval_status','approved')->orderBy('id','DESC')->limit(8)->get();
         $category=Category::where('status','active')->where('is_parent',1)->orderBy('title','ASC')->get();
-        // return $category;
         return view('frontend.index')
                 ->with('featured',$featured)
                 ->with('posts',$posts)
                 ->with('banners',$banners)
                 ->with('product_lists',$products)
                 ->with('category_lists',$category);
-    }   
+    }
 
     public function aboutUs(){
         return view('frontend.pages.about-us');
@@ -50,20 +48,16 @@ class FrontendController extends Controller
 
     public function productDetail($slug){
         $product_detail= Product::getProductBySlug($slug);
-        // dd($product_detail);
         return view('frontend.pages.product_detail')->with('product_detail',$product_detail);
     }
 
     public function productGrids(){
         $products=Product::query();
-        
+
         if(!empty($_GET['category'])){
             $slug=explode(',',$_GET['category']);
-            // dd($slug);
             $cat_ids=Category::select('id')->whereIn('slug',$slug)->pluck('id')->toArray();
-            // dd($cat_ids);
             $products->whereIn('cat_id',$cat_ids);
-            // return $products;
         }
         if(!empty($_GET['brand'])){
             $slugs=explode(',',$_GET['brand']);
@@ -82,10 +76,6 @@ class FrontendController extends Controller
 
         if(!empty($_GET['price'])){
             $price=explode('-',$_GET['price']);
-            // return $price;
-            // if(isset($price[0]) && is_numeric($price[0])) $price[0]=floor(Helper::base_amount($price[0]));
-            // if(isset($price[1]) && is_numeric($price[1])) $price[1]=ceil(Helper::base_amount($price[1]));
-            
             $products->whereBetween('price',$price);
         }
 
@@ -99,12 +89,13 @@ class FrontendController extends Controller
         }
         // Sort by name , price, category
 
-      
+
         return view('frontend.pages.product-grids')->with('products',$products)->with('recent_products',$recent_products);
     }
+
     public function productLists(){
         $products=Product::query();
-        
+
         if(!empty($_GET['category'])){
             $slug=explode(',',$_GET['category']);
             // dd($slug);
@@ -130,10 +121,6 @@ class FrontendController extends Controller
 
         if(!empty($_GET['price'])){
             $price=explode('-',$_GET['price']);
-            // return $price;
-            // if(isset($price[0]) && is_numeric($price[0])) $price[0]=floor(Helper::base_amount($price[0]));
-            // if(isset($price[1]) && is_numeric($price[1])) $price[1]=ceil(Helper::base_amount($price[1]));
-            
             $products->whereBetween('price',$price);
         }
 
@@ -147,7 +134,7 @@ class FrontendController extends Controller
         }
         // Sort by name , price, category
 
-      
+
         return view('frontend.pages.product-lists')->with('products',$products)->with('recent_products',$recent_products);
     }
     public function productFilter(Request $request){
@@ -251,7 +238,7 @@ class FrontendController extends Controller
 
     public function blog(){
         $post=Post::query();
-        
+
         if(!empty($_GET['category'])){
             $slug=explode(',',$_GET['category']);
             // dd($slug);
@@ -349,12 +336,28 @@ class FrontendController extends Controller
     public function login(){
         return view('frontend.pages.login');
     }
+    public function sellerLogin(){
+        return view('frontend.pages.seller_login');
+    }
     public function loginSubmit(Request $request){
         $data= $request->all();
         if(Auth::attempt(['email' => $data['email'], 'password' => $data['password'],'status'=>'active'])){
             Session::put('user',$data['email']);
             request()->session()->flash('success','Successfully login');
-            return redirect()->route('home');
+            return redirect()->intended('user');
+        }
+        else{
+            request()->session()->flash('error','Invalid email and password pleas try again!');
+            return redirect()->back();
+        }
+    }
+
+    public function sellerLoginSubmit(Request $request){
+        $data= $request->all();
+        if(Auth::attempt(['email' => $data['email'], 'password' => $data['password'],'status'=>'active'])){
+            Session::put('user',$data['email']);
+            request()->session()->flash('success','Successfully login');
+            return redirect()->route('seller');
         }
         else{
             request()->session()->flash('error','Invalid email and password pleas try again!');
@@ -371,6 +374,10 @@ class FrontendController extends Controller
 
     public function register(){
         return view('frontend.pages.register');
+    }
+
+    public function sellerRegister(){
+        return view('frontend.pages.seller_register');
     }
     public function registerSubmit(Request $request){
         // return $request->all();
@@ -422,5 +429,23 @@ class FrontendController extends Controller
                 return back();
             }
     }
-    
+
+    public function sellers() {
+        $sellers = User::where('role','seller')->withCount(['products' => function($q){
+            return $q->where('status','active')->where('approval_status','approved');
+        }])->get();
+
+        return view('frontend.pages.sellers')->with(['sellers'=>$sellers]);
+    }
+
+    public function sellerProfile($id) {
+        $seller = User::where('role','seller')->where('id', $id)->with(['products' => function($q){
+            return $q->where('status','active')->where('approval_status','approved');
+        }])->firstOrFail();
+
+        return view('frontend.pages.seller_profile')->with(['seller'=>$seller]);
+    }
+
+
+
 }

@@ -2,7 +2,7 @@
 
 @section('main-content')
  <!-- DataTales Example -->
- <div class="card shadow mb-4">
+ <div class="card shadow-sm mb-4">
      <div class="row">
          <div class="col-md-12">
             @include('backend.layouts.notification')
@@ -15,7 +15,7 @@
     <div class="card-body">
       <div class="table-responsive">
         @if(count($postTags)>0)
-        <table class="table table-bordered" id="post-category-dataTable" width="100%" cellspacing="0">
+        <table class="table table-stripped" id="post-category-dataTable" width="100%" cellspacing="0">
           <thead>
             <tr>
               <th>S.N.</th>
@@ -35,7 +35,7 @@
               </tr>
           </tfoot>
           <tbody>
-            @foreach($postTags as $data)   
+            @foreach($postTags as $data)
                 <tr>
                     <td>{{$data->id}}</td>
                     <td>{{$data->title}}</td>
@@ -48,14 +48,14 @@
                         @endif
                     </td>
                     <td>
-                        <a href="{{route('post-tag.edit',$data->id)}}" class="btn btn-primary btn-sm float-left mr-1" style="height:30px; width:30px;border-radius:50%" data-toggle="tooltip" title="edit" data-placement="bottom"><i class="fas fa-edit"></i></a>
+                        <a href="{{route('post-tag.edit',$data->id)}}" class="text-primary btn-sm float-left mr-1" style="height:30px; width:30px;border-radius:50%" data-toggle="tooltip" title="edit" data-placement="bottom"><i class="fas fa-edit"></i></a>
                     <form method="POST" action="{{route('post-tag.destroy',[$data->id])}}">
-                      @csrf 
+                      @csrf
                       @method('delete')
-                          <button class="btn btn-danger btn-sm dltBtn" data-id={{$data->id}} style="height:30px; width:30px;border-radius:50%" data-toggle="tooltip" data-placement="bottom" title="Delete"><i class="fas fa-trash-alt"></i></button>
+                          <button class="text-danger dltBtn border" data-id={{$data->id}} style="height:30px; width:30px;border-radius:50%" data-toggle="tooltip" data-placement="bottom" title="Delete"><i class="fas fa-trash-alt"></i></button>
                         </form>
                     </td>
-                </tr>  
+                </tr>
             @endforeach
           </tbody>
         </table>
@@ -88,7 +88,7 @@
   <!-- Page level custom scripts -->
   <script src="{{asset('backend/js/demo/datatables-demo.js')}}"></script>
   <script>
-      
+
       $('#post-category-dataTable').DataTable( {
             "columnDefs":[
                 {
@@ -101,7 +101,7 @@
         // Sweet alert
 
         function deleteData(id){
-            
+
         }
   </script>
   <script>

@@ -3,9 +3,15 @@
 @section('main-content')
 
 <div class="card">
-    <h5 class="card-header">Add User</h5>
+    <div class="card-header py-3">
+        <h4 class="font-weight-bold text-primary">Add User</h4>
+        <ul class="breadcrumbs">
+            <li><a href="{{route('admin')}}" style="color:#999">Dashboard</a></li>
+            <li><a href="" class="active text-primary">New User</a></li>
+        </ul>
+      </div>
     <div class="card-body">
-      <form method="post" action="{{route('users.store')}}">
+      <form method="post" action="{{route('users.store')}}" class="col-sm-12 col-md-4">
         {{csrf_field()}}
         <div class="form-group">
           <label for="inputTitle" class="col-form-label">Name</label>
@@ -34,9 +40,9 @@
         <div class="form-group">
         <label for="inputPhoto" class="col-form-label">Photo</label>
         <div class="input-group">
-            <span class="input-group-btn">
+            <span class="input-group-btn input-group-prepend">
                 <a id="lfm" data-input="thumbnail" data-preview="holder" class="btn btn-primary">
-                <i class="fa fa-picture-o"></i> Choose
+                <i class="fa fa-image"></i> Choose
                 </a>
             </span>
             <input id="thumbnail" class="form-control" type="text" name="photo" value="{{old('photo')}}">
@@ -46,16 +52,19 @@
           <span class="text-danger">{{$message}}</span>
           @enderror
         </div>
-        @php 
-        $roles=DB::table('users')->select('role')->get();
+        @php
+        // $roles=DB::table('users')->select('role')->get()->unique();
         @endphp
         <div class="form-group">
             <label for="role" class="col-form-label">Role</label>
             <select name="role" class="form-control">
                 <option value="">-----Select Role-----</option>
-                @foreach($roles as $role)
+                <option value="admin">admin</option>
+                <option value="seller">seller</option>
+                <option value="user">user</option>
+                {{-- @foreach($roles as $role)
                     <option value="{{$role->role}}">{{$role->role}}</option>
-                @endforeach
+                @endforeach --}}
             </select>
           @error('role')
           <span class="text-danger">{{$message}}</span>
@@ -72,8 +81,8 @@
           @enderror
           </div>
         <div class="form-group mb-3">
-          <button type="reset" class="btn btn-warning">Reset</button>
-           <button class="btn btn-success" type="submit">Submit</button>
+            <button class="btn btn-primary col-8" type="submit">Submit</button>
+            <button type="reset" class="btn btn-warning">Reset</button>
         </div>
       </form>
     </div>

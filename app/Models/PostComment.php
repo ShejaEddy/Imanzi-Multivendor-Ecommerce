@@ -19,6 +19,10 @@ class PostComment extends Model
         return PostComment::where('user_id',auth()->user()->id)->with('user_info')->paginate(10);
     }
 
+    public static function countUserPostComments(){
+        return PostComment::where('user_id',auth()->user()->id)->count() ?? 0;
+    }
+
     public function post(){
         return $this->belongsTo(Post::class);
     }

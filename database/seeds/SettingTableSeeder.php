@@ -16,11 +16,11 @@ class SettingTableSeeder extends Seeder
 
                             sunt in culpa qui officia deserunt mollit anim id est laborum. sed ut perspiciatis Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. sed ut perspi deserunt mollit anim id est laborum. sed ut perspi.",
             'short_des'=>"Praesent dapibus, neque id cursus ucibus, tortor neque egestas augue, magna eros eu erat. Aliquam erat volutpat. Nam dui mi, tincidunt quis, accumsan porttitor, facilisis luctus, metus.",
-            'photo'=>"image.jpg",
-            'logo'=>'logo.jpg',
-            'address'=>"NO. 342 - London Oxford Street, 012 United Kingdom",
-            'email'=>"eshop@gmail.com",
-            'phone'=>"+060 (800) 801-582",
+            'photo'=>"/storage/photos/1/imanzi_logo.png",
+            'logo'=>'/storage/photos/1/imanzi_logo.png',
+            'address'=>"Rwanda Westerwell - Kigali",
+            'email'=>"imanzicreation@gmail.com",
+            'phone'=>"0784141587",
         );
         DB::table('settings')->insert($data);
     }

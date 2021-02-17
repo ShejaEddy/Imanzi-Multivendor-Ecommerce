@@ -1,6 +1,8 @@
 <?php
 
+use App\User;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 class UsersTableSeeder extends Seeder
 {
@@ -13,18 +15,34 @@ class UsersTableSeeder extends Seeder
     {
         $data=array(
             array(
+                'id' => 1,
                 'name'=>'Admin',
                 'email'=>'admin@gmail.com',
-                'password'=>Hash::make('1111'),
+                'password'=>Hash::make('password'),
                 'role'=>'admin',
-                'status'=>'active'
+                'status'=>'active',
+                "created_at" =>  \Carbon\Carbon::now(),
+                "updated_at" => \Carbon\Carbon::now(), 
             ),
             array(
-                'name'=>'User',
+                'id' => 2,
+                'name'=>'Client',
                 'email'=>'user@gmail.com',
-                'password'=>Hash::make('1111'),
+                'password'=>Hash::make('password'),
                 'role'=>'user',
-                'status'=>'active'
+                'status'=>'active',
+                "created_at" =>  \Carbon\Carbon::now(), 
+                "updated_at" => \Carbon\Carbon::now(),  
+            ),
+            array(
+                'id' => 3,
+                'name'=>'Seller',
+                'email'=>'seller@gmail.com',
+                'password'=>Hash::make('password'),
+                'role'=>'seller',
+                'status'=>'active',
+                "created_at" =>  \Carbon\Carbon::now(), 
+                "updated_at" => \Carbon\Carbon::now(),  
             ),
         );
 

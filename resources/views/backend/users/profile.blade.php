@@ -4,7 +4,7 @@
 
 @section('main-content')
 
-<div class="card shadow mb-4">
+<div class="card shadow-sm mb-4">
     <div class="row">
         <div class="col-md-12">
            @include('backend.layouts.notification')
@@ -24,7 +24,7 @@
                     <div class="image">
                         @if($profile->photo)
                         <img class="card-img-top img-fluid roundend-circle mt-4" style="border-radius:50%;height:80px;width:80px;margin:auto;" src="{{$profile->photo}}" alt="profile picture">
-                        @else 
+                        @else
                         <img class="card-img-top img-fluid roundend-circle mt-4" style="border-radius:50%;height:80px;width:80px;margin:auto;" src="{{asset('backend/img/avatar.png')}}" alt="profile picture">
                         @endif
                     </div>
@@ -45,7 +45,7 @@
                       <span class="text-danger">{{$message}}</span>
                       @enderror
                       </div>
-              
+
                       <div class="form-group">
                           <label for="inputEmail" class="col-form-label">Email</label>
                         <input id="inputEmail" disabled type="email" name="email" placeholder="Enter email"  value="{{$profile->email}}" class="form-control">
@@ -53,13 +53,13 @@
                         <span class="text-danger">{{$message}}</span>
                         @enderror
                       </div>
-              
+
                       <div class="form-group">
                       <label for="inputPhoto" class="col-form-label">Photo</label>
                       <div class="input-group">
-                          <span class="input-group-btn">
+                          <span class="input-group-btn input-group-prepend">
                               <a id="lfm" data-input="thumbnail" data-preview="holder" class="btn btn-primary">
-                              <i class="fa fa-picture-o"></i> Choose
+                              <i class="fa fa-image"></i> Choose
                               </a>
                           </span>
                           <input id="thumbnail" class="form-control" type="text" name="photo" value="{{$profile->photo}}">
@@ -80,7 +80,7 @@
                         @enderror
                         </div>
 
-                        <button type="submit" class="btn btn-success btn-sm">Update</button>
+                        <button type="submit" class="btn btn-primary btn-sm">Update profile</button>
                 </form>
             </div>
         </div>
@@ -90,22 +90,7 @@
 @endsection
 
 <style>
-    .breadcrumbs{
-        list-style: none;
-    }
-    .breadcrumbs li{
-        float:left;
-        margin-right:10px;
-    }
-    .breadcrumbs li a:hover{
-        text-decoration: none;
-    }
-    .breadcrumbs li .active{
-        color:red;
-    }
-    .breadcrumbs li+li:before{
-      content:"/\00a0";
-    }
+
     .image{
         background:url('{{asset('backend/img/background.jpg')}}');
         height:150px;
@@ -119,11 +104,11 @@
         left:35%;
         margin-top:30%;
     }
-    i{
+    .card-body i{
         font-size: 14px;
         padding-right:8px;
     }
-  </style> 
+  </style>
 
 @push('scripts')
 <script src="/vendor/laravel-filemanager/js/stand-alone-button.js"></script>

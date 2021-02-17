@@ -3,9 +3,15 @@
 @section('main-content')
 
 <div class="card">
-    <h5 class="card-header">Add Post Category</h5>
+    <div class="card-header py-3">
+        <h4 class="font-weight-bold text-primary">Add Post Category</h4>
+        <ul class="breadcrumbs">
+            <li><a href="{{route('admin')}}" style="color:#999">Dashboard</a></li>
+            <li><a href="" class="active text-primary">New Category</a></li>
+        </ul>
+      </div>
     <div class="card-body">
-      <form method="post" action="{{route('post-category.store')}}">
+      <form method="post" action="{{route('post-category.store')}}" class="col-md-4 col-sm-12">
         {{csrf_field()}}
         <div class="form-group">
           <label for="inputTitle" class="col-form-label">Title</label>
@@ -26,8 +32,8 @@
           @enderror
         </div>
         <div class="form-group mb-3">
+            <button class="btn btn-primary col-8" type="submit">Submit</button>
           <button type="reset" class="btn btn-warning">Reset</button>
-           <button class="btn btn-success" type="submit">Submit</button>
         </div>
       </form>
     </div>

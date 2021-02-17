@@ -13,17 +13,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Auth::routes(['register'=>false]);
-
-Route::get('user/login','FrontendController@login')->name('login.form');
-Route::post('user/login','FrontendController@loginSubmit')->name('login.submit');
-Route::get('user/logout','FrontendController@logout')->name('user.logout');
-
-Route::get('user/register','FrontendController@register')->name('register.form');
-Route::post('user/register','FrontendController@registerSubmit')->name('register.submit');
-// Reset password
-Route::post('password-reset', 'FrontendController@showResetForm')->name('password.reset'); 
-// Socialite 
+// Socialite
 Route::get('login/{provider}/', 'Auth\LoginController@redirect')->name('login.redirect');
 Route::get('login/{provider}/callback/', 'Auth\LoginController@Callback')->name('login.callback');
 
@@ -33,6 +23,8 @@ Route::get('/','FrontendController@home')->name('home');
 Route::get('/home', 'FrontendController@index');
 Route::get('/about-us','FrontendController@aboutUs')->name('about-us');
 Route::get('/contact','FrontendController@contact')->name('contact');
+Route::get('/sellers','FrontendController@sellers')->name('sellers');
+Route::get('/sellers/{id}','FrontendController@sellerProfile')->name('seller-products');
 Route::post('/contact/message','MessageController@store')->name('contact.store');
 Route::get('product-detail/{slug}','FrontendController@productDetail')->name('product-detail');
 Route::post('/product/search','FrontendController@productSearch')->name('product.search');
@@ -80,7 +72,7 @@ Route::post('/subscribe','FrontendController@subscribe')->name('subscribe');
 Route::resource('/review','ProductReviewController');
 Route::post('product/{slug}/review','ProductReviewController@store')->name('review.store');
 
-// Post Comment 
+// Post Comment
 Route::post('post/{slug}/comment','PostCommentController@store')->name('post-comment.store');
 Route::resource('/comment','PostCommentController');
 // Coupon
@@ -93,9 +85,12 @@ Route::get('payment/success', 'PayPalController@success')->name('payment.success
 
 
 // Backend section start
-
+// Login
+Auth::routes(['register'=>false]);
 Route::group(['prefix'=>'/admin','middleware'=>['auth','admin']],function(){
+    // Dashboard Home
     Route::get('/','AdminController@index')->name('admin');
+    // File manager
     Route::get('/file-manager',function(){
         return view('backend.layouts.file-manager');
     })->name('file-manager');
@@ -103,17 +98,27 @@ Route::group(['prefix'=>'/admin','middleware'=>['auth','admin']],function(){
     Route::resource('users','UsersController');
     // Banner
     Route::resource('banner','BannerController');
-    // Brand
-    Route::resource('brand','BrandController');
     // Profile
     Route::get('/profile','AdminController@profile')->name('admin-profile');
     Route::post('/profile/{id}','AdminController@profileUpdate')->name('profile-update');
     // Category
-    Route::resource('/category','CategoryController');
+    Route::resource('category','CategoryController');
     // Product
-    Route::resource('/product','ProductController');
+    Route::get('product','ProductController@index')->name('admin.product.index');;
+    Route::get('product/{id}','ProductController@show')->name('admin.product.show');;
+    Route::get('product/{product}/edit','ProductController@editPermission')->name('admin.product.edit');
+    Route::patch('product/{product}','ProductController@setAdminPermission')->name('admin.product.update');;
     // Ajax for sub category
     Route::post('/category/{id}/child','CategoryController@getChildByParent');
+
+    // Brands
+    Route::get('brand','BrandController@index')->name('admin.brand.index');
+    // Shipping
+    Route::get('shipping','ShippingController@index')->name('admin.shipping.index');
+    // Deal
+    Route::get('deal','DealController@index')->name('admin.deal.index');
+
+
     // POST category
     Route::resource('/post-category','PostCategoryController');
     // Post tag
@@ -125,11 +130,11 @@ Route::group(['prefix'=>'/admin','middleware'=>['auth','admin']],function(){
     Route::get('/message/five','MessageController@messageFive')->name('messages.five');
 
     // Order
-    Route::resource('/order','OrderController');
-    // Shipping
-    Route::resource('/shipping','ShippingController');
+    Route::resource('order','OrderController');
+
     // Coupon
-    Route::resource('/coupon','CouponController');
+    Route::get('coupon','CouponController@index')->name('admin.coupon.index');
+
     // Settings
     Route::get('settings','AdminController@settings')->name('settings');
     Route::post('setting/update','AdminController@settingsUpdate')->name('settings.update');
@@ -144,16 +149,63 @@ Route::group(['prefix'=>'/admin','middleware'=>['auth','admin']],function(){
 });
 
 
+// Seller section start
 
+// Auth
+Route::get('/seller/login','FrontendController@sellerLogin')->name('seller.login');
+Route::post('seller/login','FrontendController@sellerLoginSubmit')->name('seller.login.submit');
 
+Route::get('/seller/register','FrontendController@sellerRegister')->name('seller.register');
+Route::post('/seller/register','FrontendController@sellerRegisterSubmit')->name('seller.register.submit');
 
+Route::group(['prefix'=>'/seller','middleware'=>['auth','seller']],function(){
+    Route::get('/','SellerController@index')->name('seller');
+    Route::get('/file-manager',function(){
+        return view('backend.layouts.file-manager');
+    })->name('file-manager');
 
+    // Profile
+    Route::get('/profile','SellerController@profile')->name('seller-profile');
+    Route::post('/profile/{id}','SellerController@profileUpdate')->name('seller-profile-update');
+    // Category
+    Route::get('settings','SellerController@settings')->name('seller.settings');
+    Route::post('setting/update','SellerController@settingsUpdate')->name('seller.settings.update');
+    // Orders
+    Route::resource('orders','SellerOrderController', [
+        'as' => 'seller'
+        ]);
+    // Product
+    Route::resource('product','ProductController');
+    // Deal
+    Route::resource('deal','DealController');
+    // Brand
+    Route::resource('brand','BrandController');
+    // Shipping
+    Route::resource('shipping','ShippingController');
+    // Coupon
+    Route::resource('coupon','CouponController');
+    // Reviews
+    Route::get('review','SellerController@reviewIndex')->name('seller.review.index');
+    // Income
+    Route::get('/income','SellerOrderController@incomeChart')->name('seller.product.order.income');
+    // Password Change
+    Route::get('change-password', 'SellerController@changePassword')->name('seller.change.password.form');
+    Route::post('change-password', 'SellerController@changePasswordStore')->name('seller.change.password');
+});
 
 
 
 
 // User section start
-Route::group(['prefix'=>'/user','middleware'=>['user']],function(){
+Route::get('/user/login','FrontendController@login')->name('login.form');
+Route::post('user/login','FrontendController@loginSubmit')->name('login.submit');
+Route::get('/user/logout','FrontendController@logout')->name('user.logout');
+
+Route::get('user/register','FrontendController@register')->name('register.form');
+Route::post('user/register','FrontendController@registerSubmit')->name('register.submit');
+// Reset password
+Route::post('password-reset', 'FrontendController@showResetForm')->name('password.reset');
+Route::group(['prefix'=>'/user','middleware'=>['user','auth']],function(){
     Route::get('/','HomeController@index')->name('user');
      // Profile
      Route::get('/profile','HomeController@profile')->name('user-profile');
@@ -167,13 +219,13 @@ Route::group(['prefix'=>'/user','middleware'=>['user']],function(){
     Route::delete('/user-review/delete/{id}','HomeController@productReviewDelete')->name('user.productreview.delete');
     Route::get('/user-review/edit/{id}','HomeController@productReviewEdit')->name('user.productreview.edit');
     Route::patch('/user-review/update/{id}','HomeController@productReviewUpdate')->name('user.productreview.update');
-    
+
     // Post comment
     Route::get('user-post/comment','HomeController@userComment')->name('user.post-comment.index');
     Route::delete('user-post/comment/delete/{id}','HomeController@userCommentDelete')->name('user.post-comment.delete');
     Route::get('user-post/comment/edit/{id}','HomeController@userCommentEdit')->name('user.post-comment.edit');
     Route::patch('user-post/comment/udpate/{id}','HomeController@userCommentUpdate')->name('user.post-comment.update');
-    
+
     // Password Change
     Route::get('change-password', 'HomeController@changePassword')->name('user.change.password.form');
     Route::post('change-password', 'HomeController@changPasswordStore')->name('change.password');

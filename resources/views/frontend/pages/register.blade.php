@@ -1,10 +1,10 @@
 @extends('frontend.layouts.master')
 
-@section('title','E-SHOP || Register Page')
+@section('title','Imanzi | Register Page')
 
 @section('main-content')
 	<!-- Breadcrumbs -->
-    <div class="breadcrumbs">
+    {{-- <div class="breadcrumbs">
         <div class="container">
             <div class="row">
                 <div class="col-12">
@@ -17,13 +17,13 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> --}}
     <!-- End Breadcrumbs -->
-            
+
     <!-- Shop Login -->
     <section class="shop login section">
         <div class="container">
-            <div class="row"> 
+            <div class="row">
                 <div class="col-lg-6 offset-lg-3 col-12">
                     <div class="login-form">
                         <h2>Register</h2>
@@ -35,7 +35,7 @@
                                 <div class="col-12">
                                     <div class="form-group">
                                         <label>Your Name<span>*</span></label>
-                                        <input type="text" name="name" placeholder="" required="required" value="{{old('name')}}">
+                                        <input type="text" class="border rounded" name="name" placeholder="" required="required" value="{{old('name')}}">
                                         @error('name')
                                             <span class="text-danger">{{$message}}</span>
                                         @enderror
@@ -44,7 +44,7 @@
                                 <div class="col-12">
                                     <div class="form-group">
                                         <label>Your Email<span>*</span></label>
-                                        <input type="text" name="email" placeholder="" required="required" value="{{old('email')}}">
+                                        <input type="text" class="border rounded" name="email" placeholder="" required="required" value="{{old('email')}}">
                                         @error('email')
                                             <span class="text-danger">{{$message}}</span>
                                         @enderror
@@ -53,7 +53,7 @@
                                 <div class="col-12">
                                     <div class="form-group">
                                         <label>Your Password<span>*</span></label>
-                                        <input type="password" name="password" placeholder="" required="required" value="{{old('password')}}">
+                                        <input type="password" class="border rounded" name="password" placeholder="" required="required" value="{{old('password')}}">
                                         @error('password')
                                             <span class="text-danger">{{$message}}</span>
                                         @enderror
@@ -62,7 +62,7 @@
                                 <div class="col-12">
                                     <div class="form-group">
                                         <label>Confirm Password<span>*</span></label>
-                                        <input type="password" name="password_confirmation" placeholder="" required="required" value="{{old('password_confirmation')}}">
+                                        <input type="password" class="border rounded" name="password_confirmation" placeholder="" required="required" value="{{old('password_confirmation')}}">
                                         @error('password_confirmation')
                                             <span class="text-danger">{{$message}}</span>
                                         @enderror

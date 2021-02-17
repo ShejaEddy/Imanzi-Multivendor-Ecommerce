@@ -2,12 +2,11 @@
 <html lang="en">
 
 <head>
-  <title>E-SHOP || Login Page</title>
+  <title>Imanzi | Login Page</title>
   @include('backend.layouts.head')
-
 </head>
 
-<body class="bg-gradient-primary">
+<body class="bg-light">
 
   <div class="container">
 
@@ -43,7 +42,7 @@
                                 <strong>{{ $message }}</strong>
                             </span>
                         @enderror
-                    
+
                     </div>
                     <div class="form-group">
                         <div class="form-check">
@@ -59,10 +58,10 @@
                     </button>
                   </form>
                   <hr>
-                   
+
                   <div class="text-center">
                     @if (Route::has('password.request'))
-                        <a class="btn btn-link small" href="{{ route('password.request') }}">
+                        <a class="btn btn-link small text-primary" href="{{ route('password.request') }}">
                             {{ __('Forgot Your Password?') }}
                         </a>
                     @endif

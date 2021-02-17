@@ -54,7 +54,7 @@ many more......
 Many more....
 
 
-======= USER DASHBOARD =======
+======= USER Dashboard =======
 
 
 - Order management

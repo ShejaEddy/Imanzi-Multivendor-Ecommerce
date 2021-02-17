@@ -14,8 +14,14 @@ class BrandController extends Controller
      */
     public function index()
     {
-        $brand=Brand::orderBy('id','DESC')->paginate();
-        return view('backend.brand.index')->with('brands',$brand);
+        $brands=Brand::query();
+        $brands = $brands->when(auth()->user()->role != 'admin', function($q){
+            return $q->where("seller_id", auth()->id());
+        })->with('seller')->orderBy('id','DESC')->paginate();
+        if(auth()->user()->role == 'admin')
+            return view('backend.brand.index')->with('brands', $brands);
+
+        return view('seller.brand.index')->with('brands', $brands);
     }
 
     /**
@@ -25,7 +31,7 @@ class BrandController extends Controller
      */
     public function create()
     {
-        return view('backend.brand.create');
+        return view('seller.brand.create');
     }
 
     /**
@@ -46,6 +52,7 @@ class BrandController extends Controller
             $slug=$slug.'-'.date('ymdis').'-'.rand(0,999);
         }
         $data['slug']=$slug;
+        $data['seller_id']=auth()->id();
         // return $data;
         $status=Brand::create($data);
         if($status){
@@ -80,7 +87,7 @@ class BrandController extends Controller
         if(!$brand){
             request()->session()->flash('error','Brand not found');
         }
-        return view('backend.brand.edit')->with('brand',$brand);
+        return view('seller.brand.edit')->with('brand',$brand);
     }
 
 
@@ -98,7 +105,7 @@ class BrandController extends Controller
             'title'=>'string|required',
         ]);
         $data=$request->all();
-       
+
         $status=$brand->fill($data)->save();
         if($status){
             request()->session()->flash('success','Brand successfully updated');

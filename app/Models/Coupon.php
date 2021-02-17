@@ -2,11 +2,16 @@
 
 namespace App\Models;
 
+use App\User;
 use Illuminate\Database\Eloquent\Model;
 
 class Coupon extends Model
 {
-    protected $fillable=['code','type','value','status'];
+    protected $fillable=['code','type','value','status','seller_id'];
+
+    public function seller() {
+        return $this->belongsTo(User::class, 'seller_id');
+    }
 
     public static function findByCode($code){
         return self::where('code',$code)->first();

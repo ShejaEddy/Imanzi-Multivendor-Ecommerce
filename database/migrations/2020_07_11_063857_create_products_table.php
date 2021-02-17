@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Product;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -24,9 +25,14 @@ class CreateProductsTable extends Migration
             $table->string('size')->default('M')->nullable();
             $table->enum('condition',['default','new','hot'])->default('default');
             $table->enum('status',['active','inactive'])->default('inactive');
+            $table->enum('approval_status',Product::APPROVAL_STATUS)->default('pending');
             $table->float('price');
-            $table->float('discount')->nullabale();
-            $table->boolean('is_featured')->deault(false);
+            $table->float('discount')->nullable();
+            $table->float('deal_discount')->nullable();
+            $table->boolean('is_featured')->default(false);
+            $table->boolean('is_deal')->default(false);
+            $table->date('deal_start_date')->nullable();
+            $table->date('deal_end_date')->nullable();
             $table->unsignedBigInteger('cat_id')->nullable();
             $table->unsignedBigInteger('child_cat_id')->nullable();
             $table->unsignedBigInteger('brand_id')->nullable();
